@@ -1,0 +1,11 @@
+.screen4{
+    margin-top: -65px;
+    width: 100%;
+    height:auto;
+    background: url('../../../../Images/img/retailer.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    
+}

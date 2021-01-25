@@ -1,0 +1,45 @@
+@font-face{
+    src: url('../../Fonts/NerkoOne-Regular.ttf');
+    font-family:heading;
+}
+@font-face{
+    src: url('../../Fonts/Texturina-VariableFont_opsz\,wght.ttf');
+    font-family:Logo;
+}
+@font-face{
+    src: url('../../Fonts/RobotoMono-VariableFont_wght.ttf');
+    font-family:content;
+}
+#heading{
+    position: relative;
+    animation: sideView 2s;
+    animation-fill-mode: forwards;
+}
+.head{
+    text-align: center;
+    font-family: heading;
+}
+.content{
+    font-family:content;
+}
+.roll:hover{
+    animation: rotate 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes rotate{
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+@keyframes sideView{
+   0%{
+       left:-200px;
+   }
+   100%{
+       left: 0px;
+   }
+}

@@ -1,0 +1,38 @@
+@font-face{
+    src: url('../../../Fonts/NerkoOne-Regular.ttf');
+    font-family:heading;
+}
+@font-face{
+    src: url('../../../Fonts/Texturina-VariableFont_opsz\,wght.ttf');
+    font-family:Logo;
+}
+@font-face{
+    src: url('../../../Fonts/RobotoMono-VariableFont_wght.ttf');
+    font-family:content;
+}
+.buttons{
+    margin-left: 70%;
+}
+.c-img{
+    height: 95vh;
+    width: 100%;
+}
+.heading{
+    text-align: center;
+    font-family: heading;
+}
+.name{
+    font-family:Logo;
+}
+.content{
+    font-family:content;
+    margin-left: 6rem;
+}
+.footer{
+    text-align: center;
+    font-family:content;
+    font-weight: 600;
+}
+.main{
+    overflow-x: hidden;
+}
