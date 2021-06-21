@@ -13,7 +13,6 @@ import Grid from '@material-ui/core/Grid';
 import '../Client/Main.css';
 import ReactPlayer from 'react-player';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -25,6 +24,8 @@ import d from '../../Images/img/distributer.jpg';
 import f from '../../Images/img/factroy.jpg';
 import r from '../../Images/img/retailer.jpg';
 import w from '../../Images/img/warehouse.jpg';
+import QrReader from 'react-qr-reader'
+import { Alert } from '@material-ui/lab';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -54,6 +55,8 @@ export default function Cindex() {
     const [open, setOpen] = React.useState(false);
     const [t,setT]=React.useState(0);
     const [id,setId]=React.useState("");
+    const [warn,setWarn]=React.useState(false);
+    const [warining,setWarining]=React.useState('');
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -61,9 +64,16 @@ export default function Cindex() {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSubmit=(e)=>{
-     e.preventDefault();
-     setT(1);
+  const fromHandle=(e)=>{
+     if(e===null){
+       setWarn(true)
+       setWarining("Please place your QR code correctly..")
+     }
+     else{
+      setId(e)
+      setT(1);
+     }
+     
   }
   if(t===0){
     return (
@@ -87,32 +97,27 @@ export default function Cindex() {
        </p>
        <Button className={classes.button} onClick={handleClickOpen} variant="contained" color="secondary">Search Product</Button>
        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-         <form onSubmit={handleSubmit}>
+         <form>
          <DialogTitle id="form-dialog-title">Smart Supply Chain</DialogTitle>
          <DialogContent>
            <DialogContentText>
-             To get the supply chain of product, please enter product id here. We will send supply
+             To get the supply chain of product, please scan product QR code here. We will send supply
              of product if it is exist in our portal.
            </DialogContentText>
-           <TextField
-             autoFocus
-             margin="dense"
-             id="id"
-             value={id}
-             onChange={(e)=>{setId(e.target.value)}}
-             label="Product Id"
-             type="text"
-             fullWidth
-             color="secondary"
-             required
-           />
+           {
+              warn?(<Alert severity="error">{warining}</Alert>):null
+           }  
+         <QrReader
+          delay={3000}
+          onError={()=>{setWarn(true);
+            setWarining("Opps something went wrong try again")}}
+          onScan={fromHandle}
+          style={{ width: '20rem',height:'20rem',marginLeft:'7rem' }}
+        />
          </DialogContent>
          <DialogActions>
          <Button onClick={handleClose} variant="contained" color="secondary">
              Cancel
-           </Button>
-           <Button type="submit" variant="contained" color="secondary">
-             Search
            </Button>
          </DialogActions>
          </form>

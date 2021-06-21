@@ -1,8 +1,7 @@
 import React from 'react'; 
-import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
+import QrReader from 'react-qr-reader'
 import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
 import Axios from 'axios';
 import { GetToken } from '../../../../Auth/AuthToken';
 import Typography from '@material-ui/core/Typography';
@@ -31,40 +30,70 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [id,setId]=React.useState('');
   const [error,setError]=React.useState(false);
   const [msg,setMsg]=React.useState('');
+  const [warn,setWarn]=React.useState(false);
+  const [warining,setWarining]=React.useState('');
   const fromHandle=(e)=>{
-    e.preventDefault();
-    Axios({
-      method:"POST",
-      headers:{
-        'Authorization':`Basic ${GetToken()}`
-      },
-      url:`${process.env.REACT_APP_URL}/productVerificationM`,
-      data:{id:id},
-    }).then(res=>{
-      if(res.data.flag===200){
-        swal({
-          title:`Product is verified Successfully`,
-          type:"success",
-          show:"true",
-          confirmButtonText:"OK",
-          icon:"success"
-        }).then(isOK=>isOK?window.location.href='/':null)
-      }
-      else{
-        setError(true);
-        setMsg(res.data.message)
-      }
-    })
+    if(e==null){
+      setWarn(true)
+      setWarining(" Please place your QR code correctly..")
+    }
+    else{
+      Axios({
+        method:"POST",
+        headers:{
+          'Authorization':`Basic ${GetToken()}`
+        },
+        url:`${process.env.REACT_APP_URL}/productVerificationM`,
+        data:{id:e},
+      }).then(res=>{
+        if(res.data.flag===200){
+          swal({
+            title:`Product is verified Successfully`,
+            type:"success",
+            show:"true",
+            confirmButtonText:"OK",
+            icon:"success"
+          }).then(isOK=>isOK?window.location.href='/':null)
+        }
+        else{
+          setError(true);
+          setMsg(res.data.message)
+        }
+      })
+    }
   }
   return(
     <React.Fragment>
       <Container component="main" maxWidth="xs">
-      <Typography><span style={{color:"red"}}>Note:</span>You can verify the product by entering product id. It is conforming that the product is verified from Warehouse Center.</Typography>
+      <Typography><span style={{color:"red"}}>Note:</span>You can verify the product by scaning QR code of product. It is conforming that the product is verified from Warehouse Center.</Typography>
       <div className={classes.paper}>
-      <form onSubmit={fromHandle}>
+      {
+              warn?(<Alert severity="error">{warining}</Alert>):null
+      }  
+      <QrReader
+          delay={3000}
+          onError={()=>{setWarn(true);
+            setWarining("Opps something went wrong try again")}}
+          onScan={fromHandle}
+          style={{ width: '100%' }}
+        />
+      </div>
+      {
+              error?(<Alert severity="error">{msg}</Alert>):null
+            }
+      </Container>
+    </React.Fragment>
+  )
+}
+
+
+
+
+
+
+{/* <form onSubmit={fromHandle}>
       <TextField
               variant="outlined"
               margin="normal"
@@ -86,12 +115,4 @@ export default function SignUp() {
             >
               Verify Product
             </Button>      
-      </form>
-      </div>
-      {
-              error?(<Alert severity="error">{msg}</Alert>):null
-            }
-      </Container>
-    </React.Fragment>
-  )
-}
+      </form> */}

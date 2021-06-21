@@ -240,7 +240,10 @@ export default function SignUp() {
         <Paper className={classes.paper}>
             <Typography variant="h6">Upload Product Image</Typography>
         <PublishIcon titleAccess="Click Here to Upload" onClick={()=>{inputRef.current.click()}} style={{width:"100px",height:"100px"}} />  
-        <Button
+        {
+          file?(
+            <div>  
+            <Button
                 onClick={imageHandle}
                 variant="contained"
                 color="secondary"
@@ -248,6 +251,9 @@ export default function SignUp() {
               >
                 Upload
               </Button>
+            </div>
+          ):null
+        }
         </Paper>
         {ie?(<Alert severity="error">{im}</Alert>):null}
        </>
